@@ -1,0 +1,44 @@
+name: VantaCrypt CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+
+  build-and-test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Emscripten
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: latest
+
+      - name: Verify emcc
+        run: emcc -v
+
+      - name: Install tsx
+        run: npm install -g tsx
+
+      - name: Build Wasm runtime
+        run: |
+          cd wasm
+          chmod +x build.sh
+          ./build.sh
+
+      - name: Run all tests
+        run: |
+          cd tests
+          chmod +x run_all.sh
+          ./run_all.sh
