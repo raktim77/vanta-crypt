@@ -1,11 +1,37 @@
-import * as wasmModule from "../wasm/dist/vantacrypt.js";
 let wasm: any = null;
+
+async function loadWasmModule() {
+
+    //
+    // Running directly from source
+    //
+
+    try {
+
+        return await import(
+            "../wasm/dist/vantacrypt.js"
+        );
+
+    } catch {
+
+        //
+        // Running from compiled dist/
+        //
+
+        return await import(
+            "../../wasm/dist/vantacrypt.js"
+        );
+    }
+}
 
 async function getWasm() {
 
     if (wasm) {
         return wasm;
     }
+
+    const wasmModule =
+        await loadWasmModule();
 
     let initializer: any =
         wasmModule;

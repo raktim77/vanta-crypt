@@ -1,0 +1,69 @@
+
+ 
+Raktim Routh
+2. If public post disabled:
+-- Private labelling app would not show public posts.
+-- Private labelling app would not allow public postings.
+ 
+4. Change in API: getEntityInteractionByCustomerList.
+This would share the status of whether the entity allowing public posting.
+
+------------------
+In private listing all the followings would come from config (json/xml) files.
+-- Social links
+-- Play store
+-- App store
+-- Blog
+-- Copyright
+-- About us
+-- Policies
+
+[IGNORE NOW]
+
+-----------------
+
+Even though the subscription is In-premise, market app allowing attendance with Virtual QR.
+ 
+Aniket Chauhan
+API: markPresentByMemberViaQR.
+
+[IGNORE NOW]
+
+--------------
+
+Link should be there to go to that section directly. In Every dashboard card's details page.
+
+[IGNORE NOW]
+
+----------------
+
+Raktim Routh Sumanta Dutta
+Must need a refresh button or pull to refresh in dashboard.
+
+---------------
+
+A QR identify for customer and members. To get quick data for owners and employees.
+[Business + Market]
+
+[IGNORE NOW]
+
+---------------
+
+Raktim Routh
+Verification status indicator not present in market Web.
+------------------
+
+QR code add against member.
+[Business + Market]
+
+[NOT PRIORITY]
+
+----------------
+
+
+ 
+ 
+
+
+
+

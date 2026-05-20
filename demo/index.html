@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8" />
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    />
+
+    <title>VantaCrypt Demo</title>
+
+    <link
+        rel="stylesheet"
+        href="./style.css"
+    />
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>VantaCrypt</h1>
+
+        <p>
+            Binary-safe WebAssembly file encryption
+        </p>
+
+        <input
+            type="file"
+            id="fileInput"
+        />
+
+        <input
+            type="password"
+            id="passwordInput"
+            placeholder="Password"
+        />
+
+        <div class="buttons">
+
+            <button id="encryptBtn">
+                Encrypt File
+            </button>
+
+            <button id="decryptBtn">
+                Decrypt File
+            </button>
+
+        </div>
+
+        <p id="status"></p>
+
+    </div>
+
+    <script
+        type="module"
+        src="./app.js"
+    ></script>
+
+</body>
+
+</html>

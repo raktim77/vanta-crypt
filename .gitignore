@@ -1,78 +1,66 @@
-# ==============================================================================
-# STANDARD REPOSITORY CONFIGURATION: .gitignore
-# Prevents dependencies, builds, environment secrets, and binary artifacts 
-# from being committed to the remote repository.
-# ==============================================================================
+# =========================
+# Build outputs
+# =========================
 
-# ------------------------------------------------------------------------------
-# 1. Dependency Directories & Package Managers
-# ------------------------------------------------------------------------------
-npm/node_modules
-node_modules/
-jspm_packages/
-web_modules/
-
-# Package manager logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# ------------------------------------------------------------------------------
-# 2. Build Outputs & Generated Artifacts
-# ------------------------------------------------------------------------------
-dist/
 build/
+dist/
 out/
-.next/
-.nuxt/
-.cache/
-.turbo/
-*.tsbuildinfo
 
-# ------------------------------------------------------------------------------
-# 3. Environment Variables, Secrets, & Credentials (CRITICAL)
-# ------------------------------------------------------------------------------
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-*.pem
-*.key
-*.cert
+# =========================
+# C++
+# =========================
 
-# ------------------------------------------------------------------------------
-# 4. Operating System Files
-# ------------------------------------------------------------------------------
+*.o
+*.obj
+*.so
+*.a
+*.exe
+
+# =========================
+# WebAssembly
+# =========================
+
+*.wasm
+*.wasm.map
+
+# =========================
+# Node.js
+# =========================
+npm/node_modules/
+node_modules/
+
+npm/dist/
+
+# =========================
+# Logs
+# =========================
+
+*.log
+
+# =========================
+# Benchmarks
+# =========================
+
+benchmark_output*.vc
+large_test_file.bin
+
+# =========================
+# OS files
+# =========================
+
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
 
-# ------------------------------------------------------------------------------
-# 5. IDE & Code Editor Workspaces
-# ------------------------------------------------------------------------------
-.idea/
-*.iws
-*.iml
-.vscode/
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-.history/
-*.swp
-*.bak
-*.tmp
+# =========================
+# IDE
+# =========================
 
-# ------------------------------------------------------------------------------
-# 6. Specific Large Binaries & Benchmarks (From previous push block)
-# ------------------------------------------------------------------------------
-benchmark_output.vc
-large_test_file.bin
-*.vc
-*.bin
-*.log
+.vscode/
+.idea/
+
+# =========================
+# Temporary
+# =========================
+
+tmp/
+temp/

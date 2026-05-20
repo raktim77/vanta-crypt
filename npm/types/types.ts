@@ -1,12 +1,12 @@
 export interface VantaCryptModule {
 
-    encrypt_buffer(
-        input: string,
+    encryptFile(
+        data: Uint8Array,
         password: string
-    ): number[];
+    ): Promise<Uint8Array>;
 
-    decrypt_buffer(
-        input: number[],
+    decryptFile(
+        data: Uint8Array,
         password: string
-    ): string;
+    ): Promise<Uint8Array>;
 }
