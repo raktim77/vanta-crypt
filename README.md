@@ -400,19 +400,6 @@ The project IS intended to demonstrate:
 
 ---
 
-# Resume Highlights
-
-- Built a high-performance binary-safe encryption SDK in modern C++
-- Engineered a WebAssembly runtime using Emscripten
-- Designed a custom encrypted binary container format
-- Implemented integrity verification and corruption detection
-- Developed a TypeScript-compatible npm package
-- Created automated native/Wasm/SDK validation pipelines
-- Designed cross-language binary-safe ABI layers
-- Implemented parallel chunk-processing architectures
-- Validated real-world binary payload integrity
-
----
 
 # License
 
