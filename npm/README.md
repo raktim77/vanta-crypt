@@ -2,7 +2,7 @@
 
 High-performance binary-safe file encryption runtime built with modern C++, WebAssembly, and TypeScript.
 
-![Web Demo](./assets/web-demo.png)
+![Web Demo](https://raw.githubusercontent.com/raktim77/vanta-crypt/refs/heads/main/assets/web-demo.png)
 
 VantaCrypt is a portable encryption SDK designed for:
 
@@ -263,7 +263,8 @@ Supported environments:
 
 # Benchmark Results
 
-![Benchmark Results](./assets/benchmark.png)
+![Benchmark Results](https://raw.githubusercontent.com/raktim77/vanta-crypt/refs/heads/main/assets/benchmark.png)
+
 
 Current native runtime throughput on a 100 MB payload:
 
@@ -283,7 +284,8 @@ Benchmarks include:
 
 # Testing
 
-![Test Suite](./assets/test-suite.png)
+![Test Suite](https://raw.githubusercontent.com/raktim77/vanta-crypt/refs/heads/main/assets/test-suite.png)
+
 
 VantaCrypt includes automated validation for:
 
