@@ -1,0 +1,35 @@
+{
+  "name": "vanta-crypt",
+  "version": "1.0.0",
+  "description": "High-performance WebAssembly encryption runtime",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc && ./copy-wasm.sh",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "wasm",
+    "webassembly",
+    "encryption",
+    "typescript",
+    "cpp",
+    "emscripten"
+  ],
+  "author": "VantaCrypt",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}

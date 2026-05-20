@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>VantaCrypt Wasm Test</title>
+</head>
+
+<body>
+
+<h1>VantaCrypt Wasm Test</h1>
+
+<script type="module">
+
+import createModule from "./dist/vantacrypt.js";
+
+const Module = await createModule();
+
+const input =
+    "Browser WebAssembly Test";
+
+const encrypted =
+    Module.encrypt_buffer(
+        input,
+        "password123"
+    );
+
+console.log("Encrypted:");
+console.log(encrypted);
+
+const decrypted =
+    Module.decrypt_buffer(
+        encrypted,
+        "password123"
+    );
+
+console.log("Decrypted:");
+console.log(decrypted);
+
+document.body.innerHTML +=
+    `<p>${decrypted}</p>`;
+
+</script>
+
+</body>
+</html>

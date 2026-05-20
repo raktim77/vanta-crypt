@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>VantaCrypt Browser Test</title>
+</head>
+
+<body>
+
+    <h1>VantaCrypt Browser Test</h1>
+
+    <script type="module">
+
+        import {
+            encryptBuffer,
+            decryptBuffer
+        } from "./dist/index.js";
+
+        async function run() {
+
+            const encoder = new TextEncoder();
+            const decoder = new TextDecoder();
+
+            const input = encoder.encode(
+                "Browser Wasm Encryption Test"
+            );
+
+            const encrypted =
+                await encryptBuffer(
+                    input,
+                    "browser-password"
+                );
+
+            console.log(
+                "Encrypted:",
+                encrypted
+            );
+
+            const decrypted =
+                await decryptBuffer(
+                    encrypted,
+                    "browser-password"
+                );
+
+            console.log(
+                "Decrypted:",
+                decoder.decode(decrypted)
+            );
+        }
+
+        run();
+
+    </script>
+
+</body>
+
+</html>
