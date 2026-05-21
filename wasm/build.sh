@@ -1,3 +1,4 @@
+mkdir -p dist
 emcc \
     bindings.cpp \
     ../core/crypto_engine.cpp \
