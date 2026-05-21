@@ -6,7 +6,24 @@ using namespace emscripten;
 
 EMSCRIPTEN_BINDINGS(vantacrypt) {
 
-    register_vector<uint8_t>("VectorUint8");
+    register_vector<uint8_t>(
+        "VectorUint8"
+    );
+
+    value_object<
+        vcrypt::DecryptionResult>(
+            "DecryptionResult"
+        )
+
+        .field(
+            "data",
+            &vcrypt::DecryptionResult::data
+        )
+
+        .field(
+            "filename",
+            &vcrypt::DecryptionResult::filename
+        );
 
     function(
         "encrypt",

@@ -78,49 +78,57 @@ namespace vcrypt
 
     } // namespace
 
-std::vector<u8> serialize(
+    std::vector<u8> serialize(
 
-    const std::vector<u8>& encrypted_data,
+        const std::vector<u8> &encrypted_data,
 
-    const std::array<u8, 16>& salt,
+        const std::array<u8, 16> &salt,
 
-    const Hash256& integrity_hash,
+        const Hash256 &integrity_hash,
 
-    u64 original_size
-)
-{
-    std::vector<u8> output;
+        u64 original_size,
 
-    output.insert(
-        output.end(),
-        MAGIC.begin(),
-        MAGIC.end()
-    );
+        const std::string &original_filename)
+    {
+        std::vector<u8> output;
 
-    write_u32(output, VERSION);
+        output.insert(
+            output.end(),
+            MAGIC.begin(),
+            MAGIC.end());
 
-    output.insert(
-        output.end(),
-        salt.begin(),
-        salt.end()
-    );
+        write_u32(output, VERSION);
 
-    output.insert(
-        output.end(),
-        integrity_hash.begin(),
-        integrity_hash.end()
-    );
+        output.insert(
+            output.end(),
+            salt.begin(),
+            salt.end());
 
-    write_u64(output, original_size);
+        output.insert(
+            output.end(),
+            integrity_hash.begin(),
+            integrity_hash.end());
 
-    output.insert(
-        output.end(),
-        encrypted_data.begin(),
-        encrypted_data.end()
-    );
+        write_u64(output, original_size);
+        u64 filename_length =
+            static_cast<u64>(
+                original_filename.size());
 
-    return output;
-}
+        write_u64(
+            output,
+            filename_length);
+
+        output.insert(
+            output.end(),
+            original_filename.begin(),
+            original_filename.end());
+        output.insert(
+            output.end(),
+            encrypted_data.begin(),
+            encrypted_data.end());
+
+        return output;
+    }
     SerializedPackage deserialize(
 
         const std::vector<u8> &file_data)
@@ -172,9 +180,29 @@ std::vector<u8> serialize(
         package.original_size =
             read_u64(file_data, 56);
 
+        std::size_t offset = 64;
+
+        u64 filename_length =
+            read_u64(
+                file_data,
+                offset);
+
+        offset += 8;
+
+        package.original_filename =
+            std::string(
+
+                file_data.begin() + offset,
+
+                file_data.begin() +
+                    offset +
+                    filename_length);
+
+        offset += filename_length;
+
         package.encrypted_data.assign(
 
-            file_data.begin() + HEADER_SIZE,
+            file_data.begin() + offset,
 
             file_data.end());
 

@@ -1,8 +1,8 @@
-# VantaCrypt
+# VantaCrypt v1.0.4
 
 High-performance binary-safe file encryption runtime built with modern C++, WebAssembly, and TypeScript.
 
-![Web Demo](https://raw.githubusercontent.com/raktim77/vanta-crypt/refs/heads/main/assets/web-demo.png)
+![Web Demo](https://raw.githubusercontent.com/raktim77/vanta-crypt/main/assets/web-demo.png)
 
 VantaCrypt is a portable encryption SDK designed for:
 
@@ -23,6 +23,40 @@ The project demonstrates:
 
 ---
 
+
+# Changelog
+
+## v1.0.4
+
+### Added
+
+- Metadata-preserving encrypted container format
+- Original filename restoration during decryption
+- Structured decryption result API
+- Wrong-password exception propagation from WebAssembly runtime
+- Native C++ exception bridging into TypeScript
+- Enhanced binary container serialization format
+- Full binary-safe metadata transport pipeline
+
+### Improved
+
+- Browser-side encrypted file restoration workflow
+- TypeScript SDK type definitions
+- WebAssembly exception handling
+- Integrity verification error reporting
+- Encrypted file portability across runtimes
+- Real-world binary file handling support
+
+### Fixed
+
+- Incorrect decrypted file extension restoration
+- Generic WebAssembly abort errors during wrong-password handling
+- Binary download restoration issues for PDF/ZIP/media files
+- TypeScript interoperability issues for Wasm exception handling
+- Cross-runtime metadata persistence bugs
+
+---
+
 # Features
 
 - Binary-safe encryption pipeline
@@ -30,6 +64,7 @@ The project demonstrates:
 - TypeScript SDK
 - Browser + Node.js support
 - Custom encrypted file container format
+- Metadata-preserving encrypted containers
 - Integrity verification
 - Automated native/Wasm/SDK tests
 - Continuous Integration pipeline
@@ -48,7 +83,7 @@ WebAssembly Runtime
         ↓
 C++ Encryption Engine
         ↓
-Serialization + Integrity Layer
+Serialization + Metadata + Integrity Layer
 ```
 
 ---
@@ -75,14 +110,18 @@ const fileBuffer =
 const encrypted =
     await encryptFile(
         fileBuffer,
-        "password123"
+        "password123",
+        file.name
     );
 
-const decrypted =
+const result =
     await decryptFile(
         encrypted,
         "password123"
     );
+
+console.log(result.data);
+console.log(result.filename);
 ```
 
 ---
@@ -105,7 +144,8 @@ const input =
 const encrypted =
     await encryptFile(
         input,
-        "password123"
+        "password123",
+        "example.pdf"
     );
 
 await fs.writeFile(
@@ -118,15 +158,15 @@ const encryptedInput =
         await fs.readFile("example.vc")
     );
 
-const decrypted =
+const result =
     await decryptFile(
         encryptedInput,
         "password123"
     );
 
 await fs.writeFile(
-    "restored.pdf",
-    decrypted
+    result.filename,
+    result.data
 );
 ```
 
@@ -136,12 +176,13 @@ await fs.writeFile(
 
 ## `encryptFile`
 
-Encrypts arbitrary binary data into the VantaCrypt container format.
+Encrypts arbitrary binary data into the VantaCrypt encrypted container format.
 
 ```ts
 encryptFile(
     data: Uint8Array,
-    password: string
+    password: string,
+    filename: string
 ): Promise<Uint8Array>
 ```
 
@@ -151,22 +192,26 @@ encryptFile(
 |---|---|---|
 | `data` | `Uint8Array` | Arbitrary binary input |
 | `password` | `string` | Encryption password |
+| `filename` | `string` | Original filename to preserve in encrypted container |
 
 ### Returns
 
-Encrypted VantaCrypt binary container.
+Encrypted VantaCrypt binary container with embedded metadata.
 
 ---
 
 ## `decryptFile`
 
-Decrypts a VantaCrypt container and restores the original binary payload.
+Decrypts a VantaCrypt container and restores the original binary payload and metadata.
 
 ```ts
 decryptFile(
     data: Uint8Array,
     password: string
-): Promise<Uint8Array>
+): Promise<{
+    data: Uint8Array;
+    filename: string;
+}>
 ```
 
 ### Parameters
@@ -178,7 +223,10 @@ decryptFile(
 
 ### Returns
 
-Original binary payload restored from the encrypted container.
+| Field | Type | Description |
+|---|---|---|
+| `data` | `Uint8Array` | Restored original binary payload |
+| `filename` | `string` | Original preserved filename |
 
 ---
 
@@ -214,6 +262,39 @@ This enables safe encryption of arbitrary binary payloads including:
 - executable binaries
 - archives
 - arbitrary byte streams
+
+---
+
+# Metadata-Preserving Container Format
+
+VantaCrypt encrypted containers preserve original file metadata including:
+
+- original filename
+- original file extension
+- original binary payload size
+- integrity verification hash
+
+Encrypted files can therefore be safely restored with their original identity intact:
+
+```text
+resume.pdf
+    ↓
+encrypt
+    ↓
+resume.vc
+    ↓
+decrypt
+    ↓
+resume.pdf
+```
+
+This enables portable encrypted file containers suitable for:
+
+- cloud storage
+- database persistence
+- encrypted backups
+- browser-side encryption workflows
+- zero-knowledge architectures
 
 ---
 
@@ -263,8 +344,7 @@ Supported environments:
 
 # Benchmark Results
 
-![Benchmark Results](https://raw.githubusercontent.com/raktim77/vanta-crypt/refs/heads/main/assets/benchmark.png)
-
+![Benchmark Results](https://raw.githubusercontent.com/raktim77/vanta-crypt/main/assets/benchmark.png)
 
 Current native runtime throughput on a 100 MB payload:
 
@@ -284,8 +364,7 @@ Benchmarks include:
 
 # Testing
 
-![Test Suite](https://raw.githubusercontent.com/raktim77/vanta-crypt/refs/heads/main/assets/test-suite.png)
-
+![Test Suite](https://raw.githubusercontent.com/raktim77/vanta-crypt/main/assets/test-suite.png)
 
 VantaCrypt includes automated validation for:
 
@@ -360,11 +439,25 @@ npm run build
 
 The browser demo supports:
 
-- file upload
+- arbitrary file uploads
 - in-browser encryption
 - in-browser decryption
+- password-protected encrypted containers
+- metadata-preserving restoration
 - binary-safe downloads
-- arbitrary file formats
+- integrity verification
+- wrong-password detection
+- arbitrary binary file formats
+
+Supported file types include:
+
+- PDF
+- PNG
+- JPG
+- ZIP
+- MP4
+- executable binaries
+- arbitrary binary payloads
 
 Run locally:
 
@@ -401,7 +494,6 @@ The project IS intended to demonstrate:
 - low-level performance engineering
 
 ---
-
 
 # License
 

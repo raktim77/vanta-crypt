@@ -1,59 +1,33 @@
 let wasm: any = null;
 
 async function loadWasmModule() {
-
-    //
-    // Running directly from source
-    //
-
-    try {
-
-        return await import(
-            "../wasm/dist/vantacrypt.js"
-        );
-
-    } catch {
-
-        //
-        // Running from compiled dist/
-        //
-
-        return await import(
-            "../../wasm/dist/vantacrypt.js"
-        );
-    }
+  return await import("./wasm/vantacrypt.js");
 }
 
 async function getWasm() {
-
-    if (wasm) {
-        return wasm;
-    }
-
-    const wasmModule =
-        await loadWasmModule();
-
-    let initializer: any =
-        wasmModule;
-
-    while (
-        initializer &&
-        typeof initializer !== "function" &&
-        initializer.default
-    ) {
-        initializer = initializer.default;
-    }
-
-    if (typeof initializer !== "function") {
-
-        throw new Error(
-            "Failed to resolve Wasm module initializer"
-        );
-    }
-
-    wasm = await initializer();
-
+  if (wasm) {
     return wasm;
+  }
+
+  const wasmModule = await loadWasmModule();
+
+  let initializer: any = wasmModule;
+
+  while (
+    initializer &&
+    typeof initializer !== "function" &&
+    initializer.default
+  ) {
+    initializer = initializer.default;
+  }
+
+  if (typeof initializer !== "function") {
+    throw new Error("Failed to resolve Wasm module initializer");
+  }
+
+  wasm = await initializer();
+
+  return wasm;
 }
 
 function uint8ArrayToVector(wasm: any, data: Uint8Array) {
@@ -79,12 +53,13 @@ function vectorToUint8Array(vec: any) {
 export async function encryptFile(
   data: Uint8Array,
   password: string,
+  filename: string,
 ): Promise<Uint8Array> {
   const wasm = await getWasm();
 
   const inputVec = uint8ArrayToVector(wasm, data);
 
-  const encryptedVec = wasm.encryptFile(inputVec, password);
+  const encryptedVec = wasm.encryptFile(inputVec, password, filename);
 
   const result = vectorToUint8Array(encryptedVec);
 
@@ -97,17 +72,46 @@ export async function encryptFile(
 export async function decryptFile(
   data: Uint8Array,
   password: string,
-): Promise<Uint8Array> {
+): Promise<{
+  data: Uint8Array;
+  filename: string;
+}> {
   const wasm = await getWasm();
 
   const inputVec = uint8ArrayToVector(wasm, data);
 
-  const decryptedVec = wasm.decryptFile(inputVec, password);
+  try {
+    const result = wasm.decryptFile(inputVec, password);
 
-  const result = vectorToUint8Array(decryptedVec);
+    const decryptedData = vectorToUint8Array(result.data);
 
-  inputVec.delete();
-  decryptedVec.delete();
+    const filename = result.filename;
 
-  return result;
+    inputVec.delete();
+    result.data.delete();
+
+    return {
+      data: decryptedData,
+      filename,
+    };
+  } catch (err: any) {
+    let message = "UNKNOWN_ERROR";
+
+    try {
+      if (wasm.getExceptionMessage) {
+        message = wasm.getExceptionMessage(err);
+
+        const cleanMessage =
+          String(message).split(",").pop()?.trim() || "UNKNOWN_ERROR";
+
+        throw new Error(cleanMessage);
+      }
+    } catch (extractErr: any) {
+      throw new Error(extractErr.message || "UNKNOWN_ERROR");
+    }
+
+    inputVec.delete();
+
+    throw new Error(message);
+  }
 }

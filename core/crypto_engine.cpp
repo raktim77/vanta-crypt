@@ -170,7 +170,8 @@ namespace vcrypt
 
     std::vector<u8> encrypt_to_file_format(
         const std::vector<u8> &data,
-        const std::string &password)
+        const std::string &password,
+        const std::string &filename)
     {
         auto salt = generate_salt();
 
@@ -207,10 +208,11 @@ namespace vcrypt
             encrypted,
             salt,
             integrity_hash,
-            static_cast<u64>(data.size()));
+            static_cast<u64>(data.size()),
+            filename);
     }
 
-    std::vector<u8> decrypt_from_file_format(
+    DecryptionResult decrypt_from_file_format(
         const std::vector<u8> &file_data,
         const std::string &password)
     {
@@ -260,9 +262,11 @@ namespace vcrypt
                 package.integrity_hash))
         {
             throw std::runtime_error(
-                "Integrity verification failed");
+                "INVALID_PASSWORD");
         }
-        return decrypted;
+        return {
+            decrypted,
+            package.original_filename};
     }
 
 } // namespace vcrypt

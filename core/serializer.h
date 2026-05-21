@@ -18,6 +18,8 @@ struct SerializedPackage {
     std::vector<u8> encrypted_data;
 
     Hash256 integrity_hash;
+
+    std::string original_filename;
 };
 
 std::vector<u8> serialize(
@@ -28,7 +30,9 @@ std::vector<u8> serialize(
 
     const Hash256& integrity_hash,
 
-    u64 original_size
+    u64 original_size,
+
+    const std::string& original_filename
 );
 
 SerializedPackage deserialize(
