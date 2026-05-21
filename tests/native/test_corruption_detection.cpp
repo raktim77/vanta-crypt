@@ -5,21 +5,21 @@
 #include <vector>
 #include <stdexcept>
 
-int main() {
+int main()
+{
 
     std::vector<uint8_t> original = {
         10,
         20,
         30,
         40,
-        50
-    };
+        50};
 
     auto encrypted =
         vcrypt::encrypt_to_file_format(
             original,
-            "password123"
-        );
+            "password123",
+            "test.txt");
 
     //
     // Corrupt one byte
@@ -29,15 +29,16 @@ int main() {
 
     bool exception_thrown = false;
 
-    try {
+    try
+    {
 
         auto decrypted =
             vcrypt::decrypt_from_file_format(
                 encrypted,
-                "password123"
-            );
-
-    } catch (const std::runtime_error&) {
+                "password123");
+    }
+    catch (const std::runtime_error &)
+    {
 
         exception_thrown = true;
     }

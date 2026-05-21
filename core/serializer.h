@@ -4,7 +4,7 @@
 #include "hashing.h"
 #include <array>
 #include <vector>
-
+#include <string>
 namespace vcrypt {
 
 struct SerializedPackage {

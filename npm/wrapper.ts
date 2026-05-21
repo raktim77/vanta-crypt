@@ -1,7 +1,7 @@
 let wasm: any = null;
 
 async function loadWasmModule() {
-  return await import("./wasm/vantacrypt.js");
+  return await import("../wasm/dist/vantacrypt.js");
 }
 
 async function getWasm() {

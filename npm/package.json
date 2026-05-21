@@ -16,9 +16,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc && ./copy-wasm.sh",
+    "build": "tsc && ./copy-wasm.sh && npm run patch-imports",
     "clean": "rm -rf dist",
-    "test": "tsx ../tests/sdk/test_typescript_sdk.ts"
+    "test": "tsx ../tests/sdk/test_typescript_sdk.ts",
+    "patch-imports": "sed -i 's#../wasm/dist/vantacrypt.js#./wasm/vantacrypt.js#g' dist/wrapper.js"
   },
   "keywords": [
     "wasm",

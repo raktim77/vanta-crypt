@@ -20,24 +20,40 @@ async function main() {
     const encrypted =
         await encryptFile(
             original,
-            "password123"
+            "password123",
+            "test.bin"
         );
 
-    const decrypted =
+    const result =
         await decryptFile(
             encrypted,
             "password123"
         );
 
+    const decrypted =
+        result.data;
+
     let equal = true;
 
-    if (original.length !== decrypted.length) {
+    if (
+        original.length !==
+        decrypted.length
+    ) {
+
         equal = false;
     }
 
-    for (let i = 0; i < original.length; i++) {
+    for (
+        let i = 0;
+        i < original.length;
+        i++
+    ) {
 
-        if (original[i] !== decrypted[i]) {
+        if (
+            original[i] !==
+            decrypted[i]
+        ) {
+
             equal = false;
             break;
         }
@@ -47,6 +63,16 @@ async function main() {
 
         throw new Error(
             "TypeScript SDK roundtrip failed"
+        );
+    }
+
+    if (
+        result.filename !==
+        "test.bin"
+    ) {
+
+        throw new Error(
+            "Filename restoration failed"
         );
     }
 

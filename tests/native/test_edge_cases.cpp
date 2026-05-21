@@ -5,31 +5,36 @@
 #include <vector>
 
 void run_test(
-    const std::vector<uint8_t>& input,
-    const std::string& label
-) {
+    const std::vector<uint8_t> &input,
+    const std::string &label)
+{
 
     auto encrypted =
         vcrypt::encrypt_to_file_format(
             input,
-            "password123"
-        );
+            "password123",
+            label + ".bin");
 
     auto decrypted =
         vcrypt::decrypt_from_file_format(
             encrypted,
-            "password123"
-        );
+            "password123");
 
-    assert(input == decrypted);
+    assert(
+        input ==
+        decrypted.data);
 
+    assert(
+        decrypted.filename ==
+        label + ".bin");
     std::cout
         << label
         << " passed"
         << std::endl;
 }
 
-int main() {
+int main()
+{
 
     //
     // Empty input
@@ -49,8 +54,7 @@ int main() {
 
     run_test(
         std::vector<uint8_t>(16, 0xAA),
-        "Exact block size"
-    );
+        "Exact block size");
 
     //
     // One byte under block size
@@ -58,8 +62,7 @@ int main() {
 
     run_test(
         std::vector<uint8_t>(15, 0xBB),
-        "15-byte input"
-    );
+        "15-byte input");
 
     //
     // One byte over block size
@@ -67,8 +70,7 @@ int main() {
 
     run_test(
         std::vector<uint8_t>(17, 0xCC),
-        "17-byte input"
-    );
+        "17-byte input");
 
     //
     // Large aligned buffer
@@ -76,8 +78,7 @@ int main() {
 
     run_test(
         std::vector<uint8_t>(4096, 0xDD),
-        "Large aligned buffer"
-    );
+        "Large aligned buffer");
 
     //
     // Large unaligned buffer
@@ -85,8 +86,7 @@ int main() {
 
     run_test(
         std::vector<uint8_t>(4097, 0xEE),
-        "Large unaligned buffer"
-    );
+        "Large unaligned buffer");
 
     std::cout
         << "All edge case tests passed"

@@ -4,7 +4,8 @@
 #include <iostream>
 #include <vector>
 
-int main() {
+int main()
+{
 
     std::vector<uint8_t> original = {
         0,
@@ -15,8 +16,7 @@ int main() {
         2,
         3,
         4,
-        5
-    };
+        5};
 
     std::string password =
         "password123";
@@ -24,16 +24,20 @@ int main() {
     auto encrypted =
         vcrypt::encrypt_to_file_format(
             original,
-            password
-        );
+            password,
+            "test.txt");
 
     auto decrypted =
         vcrypt::decrypt_from_file_format(
             encrypted,
-            password
-        );
+            password);
 
-    assert(original == decrypted);
+    assert(
+        original ==
+        decrypted.data);
+    assert(
+        decrypted.filename ==
+        "test.txt");
 
     std::cout
         << "Native roundtrip test passed"
